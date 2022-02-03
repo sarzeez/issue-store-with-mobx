@@ -1,17 +1,21 @@
-import IssueStore from "./mobx/IssueStore";
-import IssueForm from "./mobx/IssueForm";
-import UserList from "./mobx/UserList";
+import { useObserver } from "mobx-react";
+import { NewNoteForm } from "./note/notesForm";
+import { useNotesStore } from "./note/notesContext";
 
 const App = () => {
-
-  return (
+  const notesStore = useNotesStore()
+  return useObserver(() => (
     <div>
-      <IssueStore>
-        <IssueForm />
-        <UserList />
-      </IssueStore>
+      <NewNoteForm />
+      <ul>
+        {
+          notesStore.notes.map(note => (
+            <li key={note.id}>{note.text}</li>
+          ))
+        }
+      </ul>
     </div>
-  );
+  ))
 }
 
 export default App;
